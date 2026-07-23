@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+
+<style>
+body{
+font-family:Arial;
+background:#111827;
+color:white;
+padding:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:8px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:15px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:8px;
+font-size:18px;
+cursor:pointer;
+}
+</style>
+
+</head>
+<body>
+
+<h1>Admin Panel</h1>
+
+<input id="title" placeholder="Movie Title">
+
+<input id="category" placeholder="Category">
+
+<input id="poster" placeholder="Poster URL">
+
+<input id="video" placeholder="Google Drive Video URL">
+
+<button onclick="addMovie()">
+Add Movie
+</button>
+
+<script type="module">
+
+import { db } from "./firebase.js";
+
+import {
+collection,
+addDoc
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+window.addMovie = async function(){
+
+try{
+
+await addDoc(
+collection(db,"movies"),
+{
+title:document.getElementById("title").value,
+category:document.getElementById("category").value,
+poster:document.getElementById("poster").value,
+video:document.getElementById("video").value
+});
+
+alert("Movie Added Successfully");
+
+}
+catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

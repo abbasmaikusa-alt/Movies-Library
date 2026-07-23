@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Payment</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+<h1>Netflix Movies</h1>
+</header>
+
+<div class="container">
+
+<h2>Movie Access Payment</h2>
+
+<p>
+To access all movies, pay:
+</p>
+
+<h1>?200</h1>
+
+<hr>
+
+<h3>Bank Details</h3>
+
+<p>
+Bank Name: Moniepoint
+</p>
+
+<p>
+Account Name: Zainab Mohammed Bala
+</p>
+
+<p>
+Account Number: 8142153115
+</p>
+
+<hr>
+
+<h3>Enter Transaction Reference</h3>
+
+<input
+type="text"
+id="reference"
+placeholder="Transaction Reference">
+
+<br><br>
+
+<button onclick="submitPayment()">
+Submit Payment
+</button>
+
+</div>
+
+<script type="module">
+
+import { db, auth } from "./firebase.js";
+
+import {
+collection,
+addDoc
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+window.submitPayment = async function(){
+
+try{
+
+const user = auth.currentUser;
+
+if(!user){
+
+alert("Please login first");
+
+window.location = "login.html";
+
+return;
+
+}
+
+await addDoc(
+
+collection(db,"payments"),
+
+{
+
+email:user.email,
+
+uid:user.uid,
+
+amount:200,
+
+reference:document.getElementById("reference").value,
+
+status:"pending",
+
+date:new Date().toString()
+
+}
+
+);
+
+alert(
+"Payment submitted successfully. Waiting for admin approval."
+);
+
+window.location="index.html";
+
+}
+
+catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
